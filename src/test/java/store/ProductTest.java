@@ -19,7 +19,7 @@ class ProductTest {
     }
 
     @Test
-    void 상품은_수량을_차감할_수_있다() {
+    void 상품은_구매_수량_만큼_재고_수량을_차감할_수_있다() {
         //given
         final String expectedProduct = "콜라 1,000원 8개 탄산2+1";
         final Product product = new Product("콜라", 1000, 10, "탄산2+1");
@@ -32,9 +32,9 @@ class ProductTest {
     }
 
     @Test
-    void 가지고_있는_수량보다_더_차감_되면_예외가_발생한다() {
+    void 재고_수량을_초과하여_구매하면_예외가_발생한다() {
         //given
-        String expectedMessage = "[ERROR] 해당 상품의 재고가 부족합니다.";
+        final String expectedMessage = "[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.";
         final Product product = new Product("콜라", 1000, 10, "탄산2+1");
 
         //when & then
