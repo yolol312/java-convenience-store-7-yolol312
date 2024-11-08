@@ -17,9 +17,7 @@ public class Product {
     }
 
     public void deductQuantity (int quantity) {
-        if(this.quantity < quantity){
-            throw new IllegalArgumentException("[ERROR] 해당 상품의 재고가 부족합니다.");
-        }
+        validateQuantity(quantity);
         this.quantity -= quantity;
     }
 
@@ -31,5 +29,15 @@ public class Product {
     private String formatPrice(int price) {
         NumberFormat formatter = NumberFormat.getInstance(Locale.getDefault());
         return formatter.format(price);
+    }
+
+    private void validateQuantity (int quantity) {
+        if(isQuantityLessThan(quantity)) {
+            throw new IllegalArgumentException("[ERROR] 해당 상품의 재고가 부족합니다."); //어떤 상품인지 알려주면 좋을 것 같다
+        }
+    }
+
+    private boolean isQuantityLessThan(int quantity) {
+        return this.quantity < quantity;
     }
 }
