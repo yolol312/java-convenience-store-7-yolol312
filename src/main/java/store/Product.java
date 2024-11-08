@@ -16,6 +16,10 @@ public class Product {
         this.promotion = promotion;
     }
 
+    public void deductQuantity (int quantity) {
+        this.quantity -= quantity;
+    }
+
     @Override
     public String toString() {
         return name + " " + formatPrice(price) + "원 " + quantity + "개 " + promotion;
