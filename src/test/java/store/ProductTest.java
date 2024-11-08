@@ -1,6 +1,7 @@
 package store;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 
@@ -28,5 +29,17 @@ class ProductTest {
 
         //then
         assertThat(product.toString()).isEqualTo(expectedProduct);
+    }
+
+    @Test
+    void 가지고_있는_수량보다_더_차감_되면_예외가_발생한다() {
+        //given
+        String expectedMessage = "[ERROR] 해당 상품의 재고가 부족합니다."; //어떤 상품인지 알려주면 좋을 것 같다
+        final Product product = new Product("콜라", 1000, 10, "탄산2+1");
+
+        //when & then
+        assertThatThrownBy(() -> product.deductQuantity(11))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(expectedMessage);
     }
 }

@@ -17,6 +17,9 @@ public class Product {
     }
 
     public void deductQuantity (int quantity) {
+        if(this.quantity < quantity){
+            throw new IllegalArgumentException("[ERROR] 해당 상품의 재고가 부족합니다.");
+        }
         this.quantity -= quantity;
     }
 
