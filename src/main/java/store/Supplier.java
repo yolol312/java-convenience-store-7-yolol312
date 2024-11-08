@@ -7,28 +7,41 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 public class Supplier {
-    public static final String PRODUCT_PATH = "products.md";
+    private static final int COLUMN_HEADER = 1;
+    private static final int COLUMN_NAME = 0;
+    private static final int COLUMN_PRICE = 1;
+    private static final int COLUMN_QUANTITY = 2;
+    private static final int COLUMN_PROMOTION = 3;
+    private static final String COLUMN_SEPARATOR = ",";
 
     public List<Product> supplyProducts(String filePath) throws IOException {
         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filePath);
              BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
 
             return reader.lines()
-                    .skip(1)
-                    .map(line -> {
-                        String[] data = line.split(",");
-                        String name = data[0].trim();
-                        int price = Integer.parseInt(data[1].trim());
-                        int quantity = Integer.parseInt(data[2].trim());
-                        String promotion = data[3].trim();
-
-                        // promotion이 "null"일 경우 null로 설정
-                        if (promotion.equals("null")) {
-                            promotion = null;
-                        }
-                        return new Product(name, price, quantity, promotion);
-                    })
+                    .skip(COLUMN_HEADER)
+                    .map(this::split)
+                    .map(this::convertLineToProduct)
                     .toList();
         }
+    }
+
+    private String[] split(String line) {
+        return line.split(COLUMN_SEPARATOR);
+    }
+
+    private Product convertLineToProduct(String[] data) {
+        String name = data[COLUMN_NAME].trim();
+        int price = Integer.parseInt(data[COLUMN_PRICE].trim());
+        int quantity = Integer.parseInt(data[COLUMN_QUANTITY].trim());
+        String promotion = convertNullStringToNull(data[COLUMN_PROMOTION].trim());
+        return new Product(name, price, quantity, promotion);
+    }
+
+    private String convertNullStringToNull(String promotion) {
+        if (promotion.equals("null")) {
+            return null;
+        }
+        return promotion;
     }
 }

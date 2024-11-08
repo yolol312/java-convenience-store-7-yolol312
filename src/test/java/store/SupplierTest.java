@@ -7,13 +7,15 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class SupplierTest {
+    private static final String PRODUCTS_PATH = "products.md";
+
     @Test
     void 상품들을_공급한다() throws IOException {
         //given
         final Supplier distributor = new Supplier();
 
         //when
-        final List<Product> products = distributor.supplyProducts(Supplier.PRODUCT_PATH);
+        final List<Product> products = distributor.supplyProducts(PRODUCTS_PATH);
 
         //then
         assertThat(products)
