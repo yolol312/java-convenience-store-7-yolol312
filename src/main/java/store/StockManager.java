@@ -25,6 +25,19 @@ public class StockManager {
                 .collect(Collectors.joining("\n"));
     }
 
+    public void deductStockForOrder(final OrderedProduct orderedProduct) {
+        final PromotionStockProduct promotionStockProduct =
+                (PromotionStockProduct) findPromotionStockProduct(orderedProduct);
+        if (promotionStockProduct != null) {
+            promotionStockProduct.deductQuantity(orderedProduct);
+        }
+        if (orderedProduct.hasRemainingQuantity()) {
+            final RegularStockProduct regularStockProduct =
+                    (RegularStockProduct) findRegularStockProduct(orderedProduct);
+            regularStockProduct.deductQuantity(orderedProduct);
+        }
+    }
+
     private void validateOrderedProductInStock(final Product product) {
         if (!isOrderedProductInStock(product)) {
             throw new IllegalArgumentException("[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.");

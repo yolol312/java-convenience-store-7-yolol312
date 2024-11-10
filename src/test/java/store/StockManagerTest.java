@@ -6,7 +6,7 @@ import static store.Supplier.PRODUCTS_PATH;
 
 import java.io.IOException;
 import java.util.List;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -14,8 +14,8 @@ import org.junit.jupiter.params.provider.CsvSource;
 class StockManagerTest {
     private static StockManager stockManager;
 
-    @BeforeAll
-    static void setUp() throws IOException {
+    @BeforeEach
+    void setUp() throws IOException {
         final Supplier distributor = new Supplier();
         final List<Product> products = distributor.supplyProducts(PRODUCTS_PATH);
         stockManager = new StockManager(products);
@@ -62,6 +62,36 @@ class StockManagerTest {
         assertThat(stockStatus).isEqualTo(
                 "- 콜라 1,000원 10개 탄산2+1\n" +
                         "- 콜라 1,000원 10개\n" +
+                        "- 사이다 1,000원 8개 탄산2+1\n" +
+                        "- 사이다 1,000원 7개\n" +
+                        "- 오렌지주스 1,800원 9개 MD추천상품\n" +
+                        "- 탄산수 1,200원 5개 탄산2+1\n" +
+                        "- 물 500원 10개\n" +
+                        "- 비타민워터 1,500원 6개\n" +
+                        "- 감자칩 1,500원 5개 반짝할인\n" +
+                        "- 감자칩 1,500원 5개\n" +
+                        "- 초코바 1,200원 5개 MD추천상품\n" +
+                        "- 초코바 1,200원 5개\n" +
+                        "- 에너지바 2,000원 5개\n" +
+                        "- 정식도시락 6,400원 8개\n" +
+                        "- 컵라면 1,700원 1개 MD추천상품\n" +
+                        "- 컵라면 1,700원 10개"
+        );
+    }
+
+    @Test
+    void 결제된_수량만큼_재고에_있는_해당_상품의_수량을_차감할_수_있다() {
+        //given
+        final OrderedProduct orderedProduct = new OrderedProduct("콜라", 12);
+
+        //when
+        stockManager.deductStockForOrder(orderedProduct);
+        String stockStatus = stockManager.getStockStatus();
+
+        //then
+        assertThat(stockStatus).isEqualTo(
+                "- 콜라 1,000원 재고 없음 탄산2+1\n" +
+                        "- 콜라 1,000원 8개\n" +
                         "- 사이다 1,000원 8개 탄산2+1\n" +
                         "- 사이다 1,000원 7개\n" +
                         "- 오렌지주스 1,800원 9개 MD추천상품\n" +
