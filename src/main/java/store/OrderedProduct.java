@@ -5,15 +5,23 @@ public class OrderedProduct implements Product {
     private int quantity;
 
     public OrderedProduct(final String name, final int quantity) {
+        validateOrderQuantity(quantity);
         this.name = name;
-        if (quantity <= 0) {
-            throw new IllegalArgumentException("[ERROR] 주문 수량은 양수여야 합니다. 다시 입력해 주세요.");
-        }
         this.quantity = quantity;
     }
 
     public boolean hasRemainingQuantity() {
         return this.quantity > 0;
+    }
+
+    private void validateOrderQuantity(final int quantity) {
+        if (isNegative(quantity)) {
+            throw new IllegalArgumentException("[ERROR] 주문 수량은 양수여야 합니다. 다시 입력해 주세요.");
+        }
+    }
+
+    private boolean isNegative(final int quantity) {
+        return quantity <= 0;
     }
 
     @Override
