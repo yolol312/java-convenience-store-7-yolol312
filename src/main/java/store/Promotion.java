@@ -20,8 +20,12 @@ public class Promotion {
     }
 
     public boolean isPromotionActive(LocalDateTime date) {
-        LocalDate localDate = date.toLocalDate();
+        LocalDate localDate = convertDate(date);
         return !localDate.isBefore(startDate) && !localDate.isAfter(endDate);
+    }
+
+    private LocalDate convertDate(LocalDateTime date) {
+        return date.toLocalDate();
     }
 
     @Override
