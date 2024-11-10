@@ -28,8 +28,19 @@ public class Promotion {
         return Objects.equals(name, product.getPromotion());
     }
 
+    public int getRequiredQuantityForPromotion(OrderedProduct product) {
+        if (calculateQuantityRemainder(product) == 0) {
+            return 0;
+        }
+        return (buy + get) - calculateQuantityRemainder(product);
+    }
+
     private LocalDate convertDate(LocalDateTime date) {
         return date.toLocalDate();
+    }
+
+    private int calculateQuantityRemainder(OrderedProduct product) {
+        return product.getQuantity() % (buy + get);  // (buy + get) 만큼 나눈 나머지 계산
     }
 
     @Override
