@@ -2,6 +2,7 @@ package store;
 
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.Objects;
 
 public class RegularStockProduct implements Product {
     private final String name;
@@ -46,12 +47,12 @@ public class RegularStockProduct implements Product {
             return false;
         }
         final Product otherProduct = (Product) obj;
-        return this.name.equals(otherProduct.getName());
+        return Objects.equals(this.name, otherProduct.getName());
     }
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return Objects.hash(name);
     }
 
     private String formatPrice(final int price) {

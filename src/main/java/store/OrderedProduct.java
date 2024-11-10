@@ -66,12 +66,12 @@ public class OrderedProduct implements Product {
         if (!(obj instanceof Product)) {
             return false;
         }
-        final Product other = (Product) obj;
-        return this.name.equals(other.getName());
+        final Product otherProduct = (Product) obj;
+        return Objects.equals(this.name, otherProduct.getName());
     }
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return Objects.hash(name);
     }
 }

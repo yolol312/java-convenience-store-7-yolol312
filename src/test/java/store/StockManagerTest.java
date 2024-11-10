@@ -2,7 +2,7 @@ package store;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static store.Supplier.PRODUCTS_PATH;
+import static store.ProductSupplier.PRODUCTS_PATH;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,7 +16,7 @@ class StockManagerTest {
 
     @BeforeEach
     void setUp() throws IOException {
-        final Supplier distributor = new Supplier();
+        final ProductSupplier distributor = new ProductSupplier();
         final List<Product> products = distributor.supplyProducts(PRODUCTS_PATH);
         stockManager = new StockManager(products);
     }

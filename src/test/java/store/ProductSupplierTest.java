@@ -1,20 +1,20 @@
 package store;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static store.Supplier.PRODUCTS_PATH;
+import static store.ProductSupplier.PRODUCTS_PATH;
 
 import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-class SupplierTest {
+class ProductSupplierTest {
     @Test
     void 상품들을_공급한다() throws IOException {
         //given
-        final Supplier distributor = new Supplier();
+        final ProductSupplier productSupplier = new ProductSupplier();
 
         //when
-        final List<Product> products = distributor.supplyProducts(PRODUCTS_PATH);
+        final List<Product> products = productSupplier.supplyProducts(PRODUCTS_PATH);
 
         //then
         assertThat(products)

@@ -2,6 +2,7 @@ package store;
 
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.Objects;
 
 public class PromotionStockProduct implements Product {
     private final String name;
@@ -9,11 +10,15 @@ public class PromotionStockProduct implements Product {
     private final String promotion;
     private int quantity;
 
-    public PromotionStockProduct(final String name, final int price, final int quantity, final String promotion) {
+    public PromotionStockProduct(final String name, final int price, final String promotion, final int quantity) {
         this.name = name;
         this.price = price;
-        this.quantity = quantity;
         this.promotion = promotion;
+        this.quantity = quantity;
+    }
+
+    public String getPromotion() {
+        return promotion;
     }
 
     @Override
@@ -47,12 +52,12 @@ public class PromotionStockProduct implements Product {
             return false;
         }
         final Product otherProduct = (Product) obj;
-        return this.name.equals(otherProduct.getName());
+        return Objects.equals(this.name, otherProduct.getName());
     }
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return Objects.hash(name);
     }
 
     private String getProductInfo() {

@@ -13,7 +13,7 @@ class PromotionStockProductTest {
         final String expectedProduct = "콜라 1,000원 10개 탄산2+1";
 
         //when
-        final PromotionStockProduct promotionStockProduct = new PromotionStockProduct("콜라", 1000, 10, "탄산2+1");
+        final PromotionStockProduct promotionStockProduct = new PromotionStockProduct("콜라", 1000, "탄산2+1", 10);
 
         //then
         assertThat(promotionStockProduct.toString()).isEqualTo(expectedProduct);
@@ -29,7 +29,7 @@ class PromotionStockProductTest {
                                       final int orderQuantity,
                                       final String expectedStock) {
         //given
-        final PromotionStockProduct promotionStockProduct = new PromotionStockProduct(productName, 1000, 10, "탄산2+1");
+        final PromotionStockProduct promotionStockProduct = new PromotionStockProduct(productName, 1000, "탄산2+1", 10);
         final OrderedProduct orderedProduct = new OrderedProduct(productName, orderQuantity);
 
         //when
@@ -49,7 +49,7 @@ class PromotionStockProductTest {
                                     final int orderQuantity,
                                     final boolean expectedOrderRemaining) {
         //given
-        final PromotionStockProduct promotionStockProduct = new PromotionStockProduct(productName, 1000, 10, "탄산2+1");
+        final PromotionStockProduct promotionStockProduct = new PromotionStockProduct(productName, 1000, "탄산2+1", 10);
         final OrderedProduct orderedProduct = new OrderedProduct(productName, orderQuantity);
 
         //when

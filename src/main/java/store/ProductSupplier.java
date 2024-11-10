@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
-public class Supplier {
+public class ProductSupplier {
     public static final String PRODUCTS_PATH = "products.md";
 
     private static final int COLUMN_HEADER = 1;
@@ -44,6 +44,6 @@ public class Supplier {
         if (promotion.equals("null")) {
             return new RegularStockProduct(name, price, quantity);
         }
-        return new PromotionStockProduct(name, price, quantity, promotion);
+        return new PromotionStockProduct(name, price, promotion, quantity);
     }
 }
