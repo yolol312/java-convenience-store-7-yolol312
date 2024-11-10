@@ -36,4 +36,26 @@ class PromotionTest {
         //then
         assertThat(isPromotionActive).isEqualTo(expectedPromotionActive);
     }
+
+    @ParameterizedTest
+    @CsvSource({
+            "콜라, 1000, 탄산2+1, 10, true",
+            "콜라, 1000, MD추천상품, 10, false",
+            "콜라, 1000, 반짝할인, 10, false",
+    })
+    void 프로모션_재고_상품이_주어진_프로모션과_일치하는지_확인할_수_있다(final String productName,
+                                              final int price,
+                                              final String promotionName,
+                                              final int orderQuantity,
+                                              final boolean expectedPromotion) {
+        // given
+        final PromotionStockProduct promotionStockProduct =
+                new PromotionStockProduct(productName, price, promotionName, orderQuantity);
+
+        //when
+        final boolean isPromotionActive = promotion.isPromotionMatch(promotionStockProduct);
+
+        //then
+        assertThat(isPromotionActive).isEqualTo(expectedPromotion);
+    }
 }

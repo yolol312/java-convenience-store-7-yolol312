@@ -24,6 +24,10 @@ public class Promotion {
         return !localDate.isBefore(startDate) && !localDate.isAfter(endDate);
     }
 
+    public boolean isPromotionMatch(PromotionStockProduct product) {
+        return Objects.equals(name, product.getPromotion());
+    }
+
     private LocalDate convertDate(LocalDateTime date) {
         return date.toLocalDate();
     }
