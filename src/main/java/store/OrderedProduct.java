@@ -6,6 +6,9 @@ public class OrderedProduct implements Product {
 
     public OrderedProduct(final String name, final int quantity) {
         this.name = name;
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("[ERROR] 주문 수량은 양수여야 합니다. 다시 입력해 주세요.");
+        }
         this.quantity = quantity;
     }
 
@@ -27,7 +30,7 @@ public class OrderedProduct implements Product {
     public int getQuantity() {
         return quantity;
     }
-    
+
     @Override
     public String toString() {
         return String.join(" ", name, quantity + "개");
