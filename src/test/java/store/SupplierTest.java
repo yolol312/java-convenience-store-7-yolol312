@@ -1,14 +1,13 @@
 package store;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static store.Supplier.PRODUCTS_PATH;
 
 import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class SupplierTest {
-    private static final String PRODUCTS_PATH = "products.md";
-
     @Test
     void 상품들을_공급한다() throws IOException {
         //given

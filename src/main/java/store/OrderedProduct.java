@@ -14,6 +14,14 @@ public class OrderedProduct implements Product {
         return this.quantity > 0;
     }
 
+    public boolean canOrder(final PromotionStockProduct promotionStockProduct,
+                            final RegularStockProduct regularStockProduct) {
+        if (promotionStockProduct == null) {
+            return this.quantity <= regularStockProduct.getQuantity();
+        }
+        return this.quantity <= promotionStockProduct.getQuantity() + regularStockProduct.getQuantity();
+    }
+
     private void validateOrderQuantity(final int quantity) {
         if (isNegative(quantity)) {
             throw new IllegalArgumentException("[ERROR] 주문 수량은 양수여야 합니다. 다시 입력해 주세요.");

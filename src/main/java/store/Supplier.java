@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 public class Supplier {
+    public static final String PRODUCTS_PATH = "products.md";
+
     private static final int COLUMN_HEADER = 1;
     private static final int COLUMN_NAME = 0;
     private static final int COLUMN_PRICE = 1;
