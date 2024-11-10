@@ -34,14 +34,14 @@ public class Supplier {
         String name = data[COLUMN_NAME].trim();
         int price = Integer.parseInt(data[COLUMN_PRICE].trim());
         int quantity = Integer.parseInt(data[COLUMN_QUANTITY].trim());
-        String promotion = convertNullStringToNull(data[COLUMN_PROMOTION].trim());
-        return new Product(name, price, quantity, promotion);
+        String promotion = data[COLUMN_PROMOTION].trim();
+        return createProduct(name, price, quantity, promotion);
     }
 
-    private String convertNullStringToNull(String promotion) {
+    private Product createProduct(String name, int price, int quantity, String promotion) {
         if (promotion.equals("null")) {
-            return null;
+            return new RegularStockProduct(name, price, quantity);
         }
-        return promotion;
+        return new PromotionStockProduct(name, price, quantity, promotion);
     }
 }
