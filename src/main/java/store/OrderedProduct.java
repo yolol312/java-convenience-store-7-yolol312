@@ -1,5 +1,8 @@
 package store;
 
+import java.util.Objects;
+import java.util.stream.Stream;
+
 public class OrderedProduct implements Product {
     private final String name;
     private int quantity;
@@ -14,12 +17,15 @@ public class OrderedProduct implements Product {
         return this.quantity > 0;
     }
 
-    public boolean canOrder(final PromotionStockProduct promotionStockProduct,
-                            final RegularStockProduct regularStockProduct) {
-        if (promotionStockProduct == null) {
-            return this.quantity <= regularStockProduct.getQuantity();
-        }
-        return this.quantity <= promotionStockProduct.getQuantity() + regularStockProduct.getQuantity();
+    public boolean canOrder(final Product regularStockProduct, final Product promotionStockProduct) {
+        return this.quantity <= getTotalQuantity(regularStockProduct, promotionStockProduct);
+    }
+
+    private int getTotalQuantity(final Product regularStockProduct, final Product promotionStockProduct) {
+        return Stream.of(regularStockProduct, promotionStockProduct)
+                .filter(Objects::nonNull)
+                .mapToInt(Product::getQuantity)
+                .sum();
     }
 
     private void validateOrderQuantity(final int quantity) {

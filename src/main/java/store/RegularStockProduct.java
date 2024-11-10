@@ -19,6 +19,7 @@ public class RegularStockProduct implements Product {
         final int quantity = otherProduct.getQuantity();
         validateQuantity(quantity);
         this.quantity -= quantity;
+        otherProduct.deductQuantity(new OrderedProduct(name, quantity));
     }
 
     @Override

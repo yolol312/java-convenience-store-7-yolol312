@@ -21,14 +21,13 @@ class PromotionStockProductTest {
 
     @ParameterizedTest
     @CsvSource({
-            "콜라, 2, '콜라 1,000원 8개 탄산2+1', false",
-            "콜라, 10, '콜라 1,000원 재고 없음 탄산2+1', false",
-            "콜라, 15, '콜라 1,000원 재고 없음 탄산2+1', true"
+            "콜라, 2, '콜라 1,000원 8개 탄산2+1'",
+            "콜라, 10, '콜라 1,000원 재고 없음 탄산2+1'",
+            "콜라, 15, '콜라 1,000원 재고 없음 탄산2+1'"
     })
-    void 프로모션_재고_상품의_수량만큼만_구매할_수_있다(final String productName,
-                                    final int orderQuantity,
-                                    final String expectedStock,
-                                    final boolean expectedOrderRemaining) {
+    void 프로모션_재고_상품은_구매_수량만큼_차감할_수_있다(final String productName,
+                                      final int orderQuantity,
+                                      final String expectedStock) {
         //given
         final PromotionStockProduct promotionStockProduct = new PromotionStockProduct(productName, 1000, 10, "탄산2+1");
         final OrderedProduct orderedProduct = new OrderedProduct(productName, orderQuantity);
@@ -38,6 +37,25 @@ class PromotionStockProductTest {
 
         //then
         assertThat(promotionStockProduct.toString()).isEqualTo(expectedStock);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "콜라, 2, false",
+            "콜라, 10, false",
+            "콜라, 15, true"
+    })
+    void 프로모션_재고_상품의_수량만큼만_구매할_수_있다(final String productName,
+                                    final int orderQuantity,
+                                    final boolean expectedOrderRemaining) {
+        //given
+        final PromotionStockProduct promotionStockProduct = new PromotionStockProduct(productName, 1000, 10, "탄산2+1");
+        final OrderedProduct orderedProduct = new OrderedProduct(productName, orderQuantity);
+
+        //when
+        promotionStockProduct.deductQuantity(orderedProduct);
+
+        //then
         assertThat(orderedProduct.hasRemainingQuantity()).isEqualTo(expectedOrderRemaining);
     }
 }
