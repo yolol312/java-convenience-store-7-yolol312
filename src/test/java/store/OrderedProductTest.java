@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class OrderedProductTest {
@@ -21,19 +20,13 @@ class OrderedProductTest {
         assertThat(orderedProduct.toString()).isEqualTo(expectedProduct);
     }
 
-    @ParameterizedTest
-    @CsvSource({
-            "콜라, 0, false",
-            "콜라, 5, true",
-    })
-    void 주문_상품은_잔여_수량을_확인할_수_있다(final String productName,
-                                final int orderQuantity,
-                                final boolean expectedOrderRemaining) {
+    @Test
+    void 주문_상품은_잔여_수량이_있는_지_확인할_수_있다() {
         //given
-        final OrderedProduct orderedProduct = new OrderedProduct(productName, orderQuantity);
+        final OrderedProduct orderedProduct = new OrderedProduct("콜라", 5);
 
         //when & then
-        assertThat(orderedProduct.hasRemainingQuantity()).isEqualTo(expectedOrderRemaining);
+        assertThat(orderedProduct.hasRemainingQuantity()).isEqualTo(true);
     }
     //[ERROR] 주문 수량은 양수여야 합니다. 다시 입력해 주세요.
 

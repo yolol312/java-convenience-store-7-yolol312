@@ -1,6 +1,7 @@
 package store;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class StockManager {
     private final List<Product> stockProducts;
@@ -16,6 +17,12 @@ public class StockManager {
         final PromotionStockProduct promotionStockProduct =
                 (PromotionStockProduct) findPromotionStockProduct(orderedProduct);
         return orderedProduct.canOrder(regularStockProduct, promotionStockProduct);
+    }
+
+    public String getStockStatus() {
+        return stockProducts.stream()
+                .map(product -> "- " + product.toString())
+                .collect(Collectors.joining("\n"));
     }
 
     private void validateOrderedProductInStock(final Product product) {
