@@ -5,6 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import store.domain.product.OrderedProduct;
+import store.domain.product.PromotionStockProduct;
+import store.domain.product.RegularStockProduct;
+import store.domain.vo.Quantity;
 
 class QuantityTest {
     @Test
@@ -32,7 +36,8 @@ class QuantityTest {
                                  final boolean expectedResult) {
         //given
         final Quantity quantity = new Quantity(10);
-        final OrderedProduct orderedProduct = new OrderedProduct(productName, paymentAmount, orderQuantity);
+        final OrderedProduct orderedProduct = new OrderedProduct(productName, paymentAmount,
+                String.valueOf(orderQuantity));
 
         //when
         boolean comparisonResult = quantity.isQuantityAtLeast(orderedProduct);
@@ -86,7 +91,7 @@ class QuantityTest {
     void 수량을_차감할_수_있다() {
         //given
         final Quantity quantity = new Quantity(10);
-        final OrderedProduct orderedProduct = new OrderedProduct("콜라", 10000, 7);
+        final OrderedProduct orderedProduct = new OrderedProduct("콜라", 10000, String.valueOf(7));
         final int expectedQuantity = 3;
 
         //when
