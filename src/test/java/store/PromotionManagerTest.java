@@ -50,15 +50,16 @@ class PromotionManagerTest {
 
     @ParameterizedTest
     @CsvSource({
-            "콜라, 1, 2",
-            "콜라, 2, 1",
-            "콜라, 3, 0",
+            "콜라, 1000, 1, 2",
+            "콜라, 2000, 2, 1",
+            "콜라, 3000, 3, 0",
     })
     void 주문된_상품의_프로모션에_필요한_수량을_반환할_수_있다(final String productName,
+                                        final int paymentAmount,
                                         final int orderQuantity,
                                         final int expectedRequiredQuantity) {
         // given
-        final OrderedProduct orderedProduct = new OrderedProduct(productName, orderQuantity);
+        final OrderedProduct orderedProduct = new OrderedProduct(productName, paymentAmount, orderQuantity);
 
         //when
         final int requiredQuantityForPromotion =

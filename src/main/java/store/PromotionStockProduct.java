@@ -8,13 +8,13 @@ public class PromotionStockProduct implements Product {
     private final String name;
     private final int price;
     private final String promotion;
-    private int quantity;
+    private final Quantity quantity;
 
     public PromotionStockProduct(final String name, final int price, final String promotion, final int quantity) {
         this.name = name;
         this.price = price;
         this.promotion = promotion;
-        this.quantity = quantity;
+        this.quantity = new Quantity(quantity);
     }
 
     public String getPromotion() {
@@ -22,10 +22,14 @@ public class PromotionStockProduct implements Product {
     }
 
     @Override
-    public void deductQuantity(final Product otherProduct) {
-        int amountToDeduct = Math.min(this.quantity, otherProduct.getQuantity());
-        this.quantity -= amountToDeduct;
-        otherProduct.deductQuantity(new OrderedProduct(this.name, amountToDeduct));
+    public void deductQuantity(final Product orderedProduct) {
+        if (quantity.isQuantityAtLeast(orderedProduct)) {
+            quantity.deductQuantity(orderedProduct);
+            orderedProduct.deductQuantity(orderedProduct);
+            return;
+        }
+        orderedProduct.deductQuantity(this);
+        quantity.deductQuantity(this);
     }
 
     @Override
@@ -40,7 +44,7 @@ public class PromotionStockProduct implements Product {
 
     @Override
     public int getQuantity() {
-        return quantity;
+        return quantity.getQuantity();
     }
 
     @Override
@@ -69,8 +73,8 @@ public class PromotionStockProduct implements Product {
         return formatter.format(price) + "원";
     }
 
-    private String formatQuantity(final int quantity) {
-        if (quantity == 0) {
+    private String formatQuantity(final Quantity quantity) {
+        if (!quantity.hasRemainingQuantity()) {
             return "재고 없음";
         }
         return quantity + "개";

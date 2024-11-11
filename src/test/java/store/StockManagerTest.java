@@ -23,16 +23,17 @@ class StockManagerTest {
 
     @ParameterizedTest
     @CsvSource({
-            "콜라, 10, true",
-            "콜라, 21, false",
-            "정식도시락, 8, true",
-            "정식도시락, 9, false"
+            "콜라, 10, 10000, true",
+            "콜라, 21, 21000, false",
+            "정식도시락, 8, 51200, true",
+            "정식도시락, 9, 57600, false"
     })
     void 각_상품의_재고_수량을_고려하여_결제_가능_여부를_확인한다(final String productName,
                                           final int orderQuantity,
+                                          final int paymentAmount,
                                           final boolean expectedOrderRemaining) {
         //given
-        final OrderedProduct orderedProduct = new OrderedProduct(productName, orderQuantity);
+        final OrderedProduct orderedProduct = new OrderedProduct(productName, paymentAmount, orderQuantity);
 
         //when
         final boolean isPaymentAvailable = stockManager.canProceedWithPayment(orderedProduct);
@@ -45,7 +46,7 @@ class StockManagerTest {
     void 재고에_존재하지_않는_상품을_구매하면_예외가_발생한다() {
         //given
         final String expectedMessage = "[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.";
-        final OrderedProduct orderedProduct = new OrderedProduct("안성모", 1);
+        final OrderedProduct orderedProduct = new OrderedProduct("안성모", Integer.MAX_VALUE, 1);
 
         //when & then
         assertThatThrownBy(() -> stockManager.canProceedWithPayment(orderedProduct))
@@ -82,7 +83,7 @@ class StockManagerTest {
     @Test
     void 결제된_수량만큼_재고에_있는_해당_상품의_수량을_차감할_수_있다() {
         //given
-        final OrderedProduct orderedProduct = new OrderedProduct("콜라", 12);
+        final OrderedProduct orderedProduct = new OrderedProduct("콜라", 12000, 12);
 
         //when
         stockManager.deductStockForOrder(orderedProduct);

@@ -61,15 +61,16 @@ class PromotionTest {
 
     @ParameterizedTest
     @CsvSource({
-            "콜라, 1, 2",
-            "콜라, 2, 1",
-            "콜라, 3, 0",
+            "콜라, 1000, 1, 2",
+            "콜라, 2000, 2, 1",
+            "콜라, 3000, 3, 0",
     })
     void 주문_수량과_주어진_프로모션_수량_기준과의_차이를_반환할_수_있다(final String productName,
+                                              final int paymentAmount,
                                               final int orderQuantity,
                                               final int expectedQuantity) {
         // given
-        final OrderedProduct promotionStockProduct = new OrderedProduct(productName, orderQuantity);
+        final OrderedProduct promotionStockProduct = new OrderedProduct(productName, paymentAmount, orderQuantity);
 
         //when
         final int quantity = promotion.getRequiredQuantityForPromotion(promotionStockProduct);

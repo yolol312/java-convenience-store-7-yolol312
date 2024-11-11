@@ -1,31 +1,29 @@
 package store;
 
 import java.util.Objects;
-import java.util.stream.Stream;
 
 public class OrderedProduct implements Product {
     private final String name;
-    private int quantity;
+    private final PaymentAmount paymentAmount;
+    private final Quantity quantity;
 
-    public OrderedProduct(final String name, final int quantity) {
+    public OrderedProduct(final String name, final int paymentAmount, final int quantity) {
         validateOrderQuantity(quantity);
         this.name = name;
-        this.quantity = quantity;
+        this.paymentAmount = new PaymentAmount(paymentAmount);
+        this.quantity = new Quantity(quantity);
     }
 
     public boolean hasRemainingQuantity() {
-        return this.quantity > 0;
+        return quantity.hasRemainingQuantity();
     }
 
     public boolean canOrder(final Product regularStockProduct, final Product promotionStockProduct) {
-        return this.quantity <= getTotalQuantity(regularStockProduct, promotionStockProduct);
+        return quantity.canOrder(regularStockProduct, promotionStockProduct);
     }
 
-    private int getTotalQuantity(final Product regularStockProduct, final Product promotionStockProduct) {
-        return Stream.of(regularStockProduct, promotionStockProduct)
-                .filter(Objects::nonNull)
-                .mapToInt(Product::getQuantity)
-                .sum();
+    public void discountPaymentAmount(Membership membership) {
+        paymentAmount.discountPaymentAmount(membership);
     }
 
     private void validateOrderQuantity(final int quantity) {
@@ -40,7 +38,7 @@ public class OrderedProduct implements Product {
 
     @Override
     public void deductQuantity(final Product otherProduct) {
-        this.quantity -= otherProduct.getQuantity();
+        quantity.deductQuantity(otherProduct);
     }
 
     @Override
@@ -50,12 +48,12 @@ public class OrderedProduct implements Product {
 
     @Override
     public int getQuantity() {
-        return quantity;
+        return quantity.getQuantity();
     }
 
     @Override
     public String toString() {
-        return String.join(" ", name, quantity + "개");
+        return String.join(" ", name, quantity + "");
     }
 
     @Override
