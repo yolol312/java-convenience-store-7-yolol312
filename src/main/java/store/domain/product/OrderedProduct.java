@@ -1,25 +1,31 @@
-package store;
+package store.domain.product;
 
 import java.util.Objects;
+import store.domain.membership.Membership;
+import store.domain.vo.PaymentAmount;
+import store.domain.vo.Quantity;
 
 public class OrderedProduct implements Product {
     private final String name;
     private final PaymentAmount paymentAmount;
     private final Quantity quantity;
 
-    public OrderedProduct(final String name, final int paymentAmount, final int quantity) {
-        validateOrderQuantity(quantity);
+    public OrderedProduct(final String name, final int paymentAmount, final String quantity) {
+        int orderedQuantity = validateQuantity(quantity);
+        validatePositive(orderedQuantity);
         this.name = name;
         this.paymentAmount = new PaymentAmount(paymentAmount);
-        this.quantity = new Quantity(quantity);
+        this.quantity = new Quantity(orderedQuantity);
     }
 
     public boolean hasRemainingQuantity() {
         return quantity.hasRemainingQuantity();
     }
 
-    public boolean canOrder(final Product regularStockProduct, final Product promotionStockProduct) {
-        return quantity.canOrder(regularStockProduct, promotionStockProduct);
+    public void validateOrderQuantity(final Product regularStockProduct, final Product promotionStockProduct) {
+        if (!quantity.canOrder(regularStockProduct, promotionStockProduct)) {
+            throw new IllegalArgumentException("[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.");
+        }
     }
 
     public void discountPaymentAmount(Membership membership) {
@@ -34,13 +40,21 @@ public class OrderedProduct implements Product {
         return paymentAmount.getPaymentAmount() / quantity.getQuantity();
     }
 
-    public OrderedProduct getOrderedProduct() {
-        return new OrderedProduct(name, paymentAmount.getPaymentAmount(), quantity.getQuantity());
+    public boolean equalsName(final String product) {
+        return name.equals(product);
     }
 
     @Override
     public void deductQuantity(final Product otherProduct) {
         quantity.deductQuantity(otherProduct);
+    }
+
+    public void deductQuantity(final Integer otherProductQuantity) {
+        quantity.deductQuantity(otherProductQuantity);
+    }
+
+    public void increaseQuantity(final Integer otherProductQuantity) {
+        quantity.increaseQuantity(otherProductQuantity);
     }
 
     @Override
@@ -75,7 +89,15 @@ public class OrderedProduct implements Product {
         return Objects.hash(name);
     }
 
-    private void validateOrderQuantity(final int quantity) {
+    private int validateQuantity(final String quantity) {
+        try {
+            return Integer.parseInt(quantity);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("[ERROR] 주문 수량은 숫자여야 합니다. 다시 입력해 주세요.");
+        }
+    }
+
+    private void validatePositive(final int quantity) {
         if (isNegative(quantity)) {
             throw new IllegalArgumentException("[ERROR] 주문 수량은 양수여야 합니다. 다시 입력해 주세요.");
         }

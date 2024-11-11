@@ -1,7 +1,8 @@
-package store;
+package store.domain.vo;
 
 import java.util.Objects;
 import java.util.stream.Stream;
+import store.domain.product.Product;
 
 public class Quantity {
     private int quantity;
@@ -32,6 +33,14 @@ public class Quantity {
 
     public void deductQuantity(final Product otherProduct) {
         this.quantity -= otherProduct.getQuantity();
+    }
+
+    public void deductQuantity(final Integer otherProductQuantity) {
+        this.quantity -= otherProductQuantity;
+    }
+
+    public void increaseQuantity(final Integer otherProductQuantity) {
+        this.quantity += otherProductQuantity;
     }
 
     private int getTotalQuantity(final Product regularStockProduct, final Product promotionStockProduct) {

@@ -1,7 +1,9 @@
-package store;
+package store.domain.promotion;
 
 import camp.nextstep.edu.missionutils.DateTimes;
 import java.util.List;
+import store.domain.product.OrderedProduct;
+import store.domain.product.PromotionStockProduct;
 
 public class PromotionManager {
     private final List<Promotion> promotions;
@@ -19,8 +21,11 @@ public class PromotionManager {
 
     public int calculateRequiredQuantityForPromotion(final OrderedProduct product, final Promotion promotion) {
         final Promotion productPromotion = findPromotion(promotion);
-        if (promotion.isPromotionActive(DateTimes.now())) {
-            return promotion.getRequiredQuantityForPromotion(product);
+        if (productPromotion == null) {
+            return 0;
+        }
+        if (productPromotion.isPromotionActive(DateTimes.now())) {
+            return productPromotion.getRequiredQuantityForPromotion(product);
         }
         return 0;
     }

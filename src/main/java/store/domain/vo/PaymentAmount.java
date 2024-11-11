@@ -1,7 +1,8 @@
-package store;
+package store.domain.vo;
 
 import java.text.NumberFormat;
 import java.util.Locale;
+import store.domain.membership.Membership;
 
 public class PaymentAmount {
     private int paymentAmount;

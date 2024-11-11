@@ -2,7 +2,6 @@ package store;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static store.ProductSupplier.PRODUCTS_PATH;
 
 import java.io.IOException;
 import java.util.List;
@@ -10,6 +9,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import store.domain.StockManager;
+import store.domain.product.OrderedProduct;
+import store.domain.product.Product;
+import store.io.ProductSupplier;
 
 class StockManagerTest {
     private static StockManager stockManager;
@@ -17,7 +20,7 @@ class StockManagerTest {
     @BeforeEach
     void setUp() throws IOException {
         final ProductSupplier productSupplier = new ProductSupplier();
-        final List<Product> products = productSupplier.supplyProducts(PRODUCTS_PATH);
+        final List<Product> products = productSupplier.supplyProducts();
         stockManager = new StockManager(products);
     }
 
@@ -28,28 +31,15 @@ class StockManagerTest {
             "정식도시락, 8, 51200, true",
             "정식도시락, 9, 57600, false"
     })
-    void 각_상품의_재고_수량을_고려하여_결제_가능_여부를_확인한다(final String productName,
-                                          final int orderQuantity,
-                                          final int paymentAmount,
-                                          final boolean expectedOrderRemaining) {
-        //given
-        final OrderedProduct orderedProduct = new OrderedProduct(productName, paymentAmount, orderQuantity);
-
-        //when
-        final boolean isPaymentAvailable = stockManager.canProceedWithPayment(orderedProduct);
-
-        //then
-        assertThat(isPaymentAvailable).isEqualTo(expectedOrderRemaining);
-    }
 
     @Test
     void 재고에_존재하지_않는_상품을_구매하면_예외가_발생한다() {
         //given
         final String expectedMessage = "[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.";
-        final OrderedProduct orderedProduct = new OrderedProduct("안성모", Integer.MAX_VALUE, 1);
+        final OrderedProduct orderedProduct = new OrderedProduct("안성모", Integer.MAX_VALUE, String.valueOf(1));
 
         //when & then
-        assertThatThrownBy(() -> stockManager.canProceedWithPayment(orderedProduct))
+        assertThatThrownBy(() -> stockManager.validateProceedWithPayment(orderedProduct))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining(expectedMessage);
     }
@@ -83,7 +73,7 @@ class StockManagerTest {
     @Test
     void 결제된_수량만큼_재고에_있는_해당_상품의_수량을_차감할_수_있다() {
         //given
-        final OrderedProduct orderedProduct = new OrderedProduct("콜라", 12000, 12);
+        final OrderedProduct orderedProduct = new OrderedProduct("콜라", 12000, String.valueOf(12));
 
         //when
         stockManager.deductStockForOrder(orderedProduct);

@@ -7,13 +7,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
+import store.domain.Receipt;
+import store.domain.product.OrderedProduct;
 
 class ReceiptTest {
     @Test
     void 영수증을_발행할_수_있다() {
         //given
-        OrderedProduct cola = new OrderedProduct("콜라", 3000, 3);
-        OrderedProduct energyBar = new OrderedProduct("오렌지주스", 3600, 2);
+        OrderedProduct cola = new OrderedProduct("콜라", 3000, String.valueOf(3));
+        OrderedProduct energyBar = new OrderedProduct("오렌지주스", 3600, String.valueOf(2));
         List<OrderedProduct> orderedProducts = Arrays.asList(cola, energyBar);
 
         Map<OrderedProduct, Integer> promotionProducts = new HashMap<>();

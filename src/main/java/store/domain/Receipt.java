@@ -1,7 +1,9 @@
-package store;
+package store.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import store.domain.product.OrderedProduct;
 
 public class Receipt {
     private final List<OrderedProduct> orderedProducts;
@@ -30,6 +32,15 @@ public class Receipt {
         receipt.append(String.format("멤버십할인\t\t\t-%,d\n", getMembershipDiscountAmount(promotionProducts)));
         receipt.append(String.format("내실돈\t\t\t %,d\n", getFinalPaymentAmount(promotionProducts)));
         return receipt.toString();
+    }
+
+    public List<OrderedProduct> getOrderedProducts() {
+        List<OrderedProduct> deepCopiedList = new ArrayList<>();
+        for (OrderedProduct product : orderedProducts) {
+            deepCopiedList.add(
+                    new OrderedProduct(product.getName(), product.getPrice(), String.valueOf(product.getQuantity())));
+        }
+        return deepCopiedList;
     }
 
     private int getTotalQuantity() {

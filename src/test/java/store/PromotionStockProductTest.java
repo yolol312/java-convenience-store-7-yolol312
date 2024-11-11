@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import store.domain.product.OrderedProduct;
+import store.domain.product.PromotionStockProduct;
 
 class PromotionStockProductTest {
     @Test
@@ -31,7 +33,8 @@ class PromotionStockProductTest {
                                        final String expectedStock) {
         //given
         final PromotionStockProduct promotionStockProduct = new PromotionStockProduct(productName, 1000, "탄산2+1", 10);
-        final OrderedProduct orderedProduct = new OrderedProduct(productName, paymentAmount, orderQuantity);
+        final OrderedProduct orderedProduct = new OrderedProduct(productName, paymentAmount,
+                String.valueOf(orderQuantity));
 
         //when
         promotionStockProduct.deductQuantity(orderedProduct);

@@ -1,12 +1,13 @@
 package store;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static store.PromotionSupplier.PROMOTION_PATH;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import store.domain.promotion.Promotion;
+import store.io.PromotionSupplier;
 
 class PromotionSupplierTest {
     @Test
@@ -26,7 +27,7 @@ class PromotionSupplierTest {
         );
 
         //when
-        final List<Promotion> promotions = promotionSupplier.supplyPromotions(PROMOTION_PATH);
+        final List<Promotion> promotions = promotionSupplier.supplyPromotions();
 
         //then
         assertThat(promotions).containsExactlyElementsOf(expectedPromotions);

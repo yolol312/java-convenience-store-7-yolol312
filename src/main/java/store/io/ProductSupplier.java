@@ -1,13 +1,16 @@
-package store;
+package store.io;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
+import store.domain.product.Product;
+import store.domain.product.PromotionStockProduct;
+import store.domain.product.RegularStockProduct;
 
 public class ProductSupplier {
-    public static final String PRODUCTS_PATH = "products.md";
+    private static final String PRODUCTS_PATH = "products.md";
 
     private static final int COLUMN_HEADER = 1;
     private static final int COLUMN_NAME = 0;
@@ -16,8 +19,8 @@ public class ProductSupplier {
     private static final int COLUMN_PROMOTION = 3;
     private static final String COLUMN_SEPARATOR = ",";
 
-    public List<Product> supplyProducts(String filePath) throws IOException {
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filePath);
+    public List<Product> supplyProducts() throws IOException {
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(PRODUCTS_PATH);
              BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
 
             return reader.lines()

@@ -6,6 +6,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import store.domain.product.OrderedProduct;
+import store.domain.product.RegularStockProduct;
 
 class RegularStockProductTest {
     @Test
@@ -31,7 +33,8 @@ class RegularStockProductTest {
                                             String expectedStock) {
         //given
         final RegularStockProduct regularStockProduct = new RegularStockProduct(productName, 1000, 10);
-        final OrderedProduct orderedProduct = new OrderedProduct(productName, paymentAmount, orderQuantity);
+        final OrderedProduct orderedProduct = new OrderedProduct(productName, paymentAmount,
+                String.valueOf(orderQuantity));
 
         //when
         regularStockProduct.deductQuantity(orderedProduct);
@@ -45,7 +48,7 @@ class RegularStockProductTest {
         //given
         final String expectedMessage = "[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.";
         final RegularStockProduct regularStockProduct = new RegularStockProduct("콜라", 1000, 10);
-        final OrderedProduct orderedProduct = new OrderedProduct("콜라", 11000, 11);
+        final OrderedProduct orderedProduct = new OrderedProduct("콜라", 11000, String.valueOf(11));
 
         //when & then
         assertThatThrownBy(() -> regularStockProduct.deductQuantity(orderedProduct))

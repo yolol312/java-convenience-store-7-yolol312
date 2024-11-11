@@ -1,11 +1,12 @@
 package store;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static store.ProductSupplier.PRODUCTS_PATH;
 
 import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import store.domain.product.Product;
+import store.io.ProductSupplier;
 
 class ProductSupplierTest {
     @Test
@@ -14,7 +15,7 @@ class ProductSupplierTest {
         final ProductSupplier productSupplier = new ProductSupplier();
 
         //when
-        final List<Product> products = productSupplier.supplyProducts(PRODUCTS_PATH);
+        final List<Product> products = productSupplier.supplyProducts();
 
         //then
         assertThat(products)

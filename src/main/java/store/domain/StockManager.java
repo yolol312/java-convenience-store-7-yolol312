@@ -1,7 +1,11 @@
-package store;
+package store.domain;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import store.domain.product.OrderedProduct;
+import store.domain.product.Product;
+import store.domain.product.PromotionStockProduct;
+import store.domain.product.RegularStockProduct;
 
 public class StockManager {
     private final List<Product> stockProducts;
@@ -10,13 +14,13 @@ public class StockManager {
         this.stockProducts = products;
     }
 
-    public boolean canProceedWithPayment(final OrderedProduct orderedProduct) {
+    public void validateProceedWithPayment(final OrderedProduct orderedProduct) {
         validateOrderedProductInStock(orderedProduct);
         final RegularStockProduct regularStockProduct =
                 (RegularStockProduct) findRegularStockProduct(orderedProduct);
         final PromotionStockProduct promotionStockProduct =
                 (PromotionStockProduct) findPromotionStockProduct(orderedProduct);
-        return orderedProduct.canOrder(regularStockProduct, promotionStockProduct);
+        orderedProduct.validateOrderQuantity(regularStockProduct, promotionStockProduct);
     }
 
     public String getStockStatus() {
@@ -38,13 +42,21 @@ public class StockManager {
         }
     }
 
-    public PaymentAmount getStockProductPrice(final OrderedProduct orderedProduct) {
+    public OrderedProduct prepareOrderedProduct(final OrderedProduct orderedProduct) {
         Product product = findStockProduct(orderedProduct);
         if (product instanceof PromotionStockProduct promotionStockProduct) {
-            return new PaymentAmount(promotionStockProduct.getTotalPrice(orderedProduct));
+            return promotionStockProduct.prepareOrderedProduct(orderedProduct);
         }
         RegularStockProduct regularStockProduct = (RegularStockProduct) product;
-        return new PaymentAmount(regularStockProduct.getTotalPrice(orderedProduct));
+        return regularStockProduct.prepareOrderedProduct(orderedProduct);
+    }
+
+    public Product findPromotionStockProduct(final Product product) {
+        return stockProducts.stream()
+                .filter(stockProduct -> stockProduct.equals(product))
+                .filter(stockProduct -> stockProduct instanceof PromotionStockProduct)
+                .findFirst()
+                .orElse(null);
     }
 
     private void validateOrderedProductInStock(final Product product) {
@@ -69,14 +81,6 @@ public class StockManager {
         return stockProducts.stream()
                 .filter(stockProduct -> stockProduct.equals(product))
                 .filter(stockProduct -> stockProduct instanceof RegularStockProduct)
-                .findFirst()
-                .orElse(null);
-    }
-
-    private Product findPromotionStockProduct(final Product product) {
-        return stockProducts.stream()
-                .filter(stockProduct -> stockProduct.equals(product))
-                .filter(stockProduct -> stockProduct instanceof PromotionStockProduct)
                 .findFirst()
                 .orElse(null);
     }

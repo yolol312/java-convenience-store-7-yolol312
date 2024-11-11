@@ -1,7 +1,6 @@
 package store;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static store.PromotionSupplier.PROMOTION_PATH;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -9,6 +8,11 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import store.domain.product.OrderedProduct;
+import store.domain.product.PromotionStockProduct;
+import store.domain.promotion.Promotion;
+import store.domain.promotion.PromotionManager;
+import store.io.PromotionSupplier;
 
 class PromotionManagerTest {
     private static PromotionManager promotionManager;
@@ -17,7 +21,7 @@ class PromotionManagerTest {
     @BeforeEach
     void setUp() throws IOException {
         final PromotionSupplier promotionSupplier = new PromotionSupplier();
-        final List<Promotion> promotions = promotionSupplier.supplyPromotions(PROMOTION_PATH);
+        final List<Promotion> promotions = promotionSupplier.supplyPromotions();
         promotionManager = new PromotionManager(promotions);
 
         final LocalDate startDate = LocalDate.parse("2024-01-01");
@@ -59,7 +63,8 @@ class PromotionManagerTest {
                                         final int orderQuantity,
                                         final int expectedRequiredQuantity) {
         // given
-        final OrderedProduct orderedProduct = new OrderedProduct(productName, paymentAmount, orderQuantity);
+        final OrderedProduct orderedProduct = new OrderedProduct(productName, paymentAmount,
+                String.valueOf(orderQuantity));
 
         //when
         final int requiredQuantityForPromotion =

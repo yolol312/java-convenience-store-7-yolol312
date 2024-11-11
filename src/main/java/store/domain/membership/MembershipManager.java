@@ -1,4 +1,6 @@
-package store;
+package store.domain.membership;
+
+import store.domain.product.OrderedProduct;
 
 public class MembershipManager {
 

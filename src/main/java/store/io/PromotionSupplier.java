@@ -1,4 +1,4 @@
-package store;
+package store.io;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,9 +6,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.util.List;
+import store.domain.promotion.Promotion;
 
 public class PromotionSupplier {
-    public static final String PROMOTION_PATH = "promotions.md";
+    private static final String PROMOTION_PATH = "promotions.md";
 
     private static final int COLUMN_HEADER = 1;
     private static final int COLUMN_NAME = 0;
@@ -18,8 +19,8 @@ public class PromotionSupplier {
     private static final int COLUMN_END_DATE = 4;
     private static final String COLUMN_SEPARATOR = ",";
 
-    public List<Promotion> supplyPromotions(String filePath) throws IOException {
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filePath);
+    public List<Promotion> supplyPromotions() throws IOException {
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(PROMOTION_PATH);
              BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
 
             return reader.lines()

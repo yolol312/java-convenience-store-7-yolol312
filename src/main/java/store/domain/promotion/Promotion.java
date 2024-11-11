@@ -1,8 +1,10 @@
-package store;
+package store.domain.promotion;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import store.domain.product.OrderedProduct;
+import store.domain.product.PromotionStockProduct;
 
 public class Promotion {
     private final String name;

@@ -1,4 +1,4 @@
-package store;
+package store.domain.product;
 
 public interface Product {
     void deductQuantity(final Product otherProduct);

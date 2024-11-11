@@ -7,6 +7,9 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import store.domain.product.OrderedProduct;
+import store.domain.product.PromotionStockProduct;
+import store.domain.promotion.Promotion;
 
 class PromotionTest {
     private static Promotion promotion;
@@ -70,7 +73,8 @@ class PromotionTest {
                                               final int orderQuantity,
                                               final int expectedQuantity) {
         // given
-        final OrderedProduct promotionStockProduct = new OrderedProduct(productName, paymentAmount, orderQuantity);
+        final OrderedProduct promotionStockProduct = new OrderedProduct(productName, paymentAmount,
+                String.valueOf(orderQuantity));
 
         //when
         final int quantity = promotion.getRequiredQuantityForPromotion(promotionStockProduct);

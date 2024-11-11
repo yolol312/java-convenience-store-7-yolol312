@@ -1,4 +1,4 @@
-package store;
+package store.domain.membership;
 
 public enum Membership {
     MEMBER(0.3f, 8_000),

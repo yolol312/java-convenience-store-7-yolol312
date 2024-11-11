@@ -5,6 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import store.domain.membership.Membership;
+import store.domain.membership.MembershipManager;
+import store.domain.product.OrderedProduct;
 
 class MembershipManagerTest {
     private static MembershipManager membershipManager;
@@ -26,7 +29,8 @@ class MembershipManagerTest {
                             final String membershipType,
                             final int expectedResult) {
         //given
-        final OrderedProduct orderedProduct = new OrderedProduct(productName, paymentAmount, orderQuantity);
+        final OrderedProduct orderedProduct = new OrderedProduct(productName, paymentAmount,
+                String.valueOf(orderQuantity));
         final Membership membership = Membership.valueOf(membershipType);
         //when
         membershipManager.applyMemberDiscount(orderedProduct, membership);
