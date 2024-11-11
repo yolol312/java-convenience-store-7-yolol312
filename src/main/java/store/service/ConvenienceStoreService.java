@@ -125,7 +125,7 @@ public class ConvenienceStoreService {
         Map<OrderedProduct, Integer> orderedProductPromotions = new HashMap<>();
         for (OrderedProduct orderedProduct : orderedProducts) {
             PromotionStockProduct product = findPromotionStockProduct(orderedProduct);
-            if (calculateQuantity(orderedProduct, product) <= 0 || product != null) {
+            if (product != null && calculateQuantity(orderedProduct, product) > 0) {
                 orderedProductPromotions.put(orderedProduct, calculateQuantity(orderedProduct, product));
             }
         }

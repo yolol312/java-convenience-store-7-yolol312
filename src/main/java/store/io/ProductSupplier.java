@@ -44,7 +44,7 @@ public class ProductSupplier {
     }
 
     private Product createProduct(String name, int price, int quantity, String promotion) {
-        if (promotion.equals("null")) {
+        if (promotion == null || promotion.equals("null")) {
             return new RegularStockProduct(name, price, quantity);
         }
         return new PromotionStockProduct(name, price, promotion, quantity);

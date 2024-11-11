@@ -18,8 +18,8 @@ public class InputValidator {
     }
 
     public void validateYesOrNo(String input) {
-        if (isYesOrNo(input)) {
-            throw new IllegalArgumentException(ErrorMessage.INVALID_INPUT_NUMBER_CHARACTER_ERROR);
+        if (!isYesOrNo(input)) {
+            throw new IllegalArgumentException(ErrorMessage.INVALID_INPUT_ANSWER_ERROR);
         }
     }
 

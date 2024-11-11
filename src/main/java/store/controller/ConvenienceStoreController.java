@@ -32,18 +32,18 @@ public class ConvenienceStoreController {
         Map<String, Integer> canApplyMap = promotionMapping.get(true);
         Map<String, Integer> cannotApplyMap = promotionMapping.get(false);
 
+        if (cannotApplyMap != null) {
+            for (Map.Entry<String, Integer> productPromotion : cannotApplyMap.entrySet()) {
+                String confirmationAnswer = inputView.getPromotionDiscountConfirmation(productPromotion);
+                convenienceStoreService.applyPromotionExclusion(confirmationAnswer, orderedProducts, productPromotion);
+            }
+        }
+
         if (canApplyMap != null) {
             for (Map.Entry<String, Integer> productPromotion : canApplyMap.entrySet()) {
                 String additionalConfirmationAnswer = inputView.getPromotionAdditionalItemConfirmation(
                         productPromotion.getKey());
                 convenienceStoreService.applyPromotion(additionalConfirmationAnswer, orderedProducts, productPromotion);
-            }
-        }
-
-        if (cannotApplyMap != null) {
-            for (Map.Entry<String, Integer> productPromotion : cannotApplyMap.entrySet()) {
-                String confirmationAnswer = inputView.getPromotionDiscountConfirmation(productPromotion);
-                convenienceStoreService.applyPromotionExclusion(confirmationAnswer, orderedProducts, productPromotion);
             }
         }
 
