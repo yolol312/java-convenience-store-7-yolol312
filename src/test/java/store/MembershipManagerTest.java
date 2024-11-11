@@ -17,7 +17,8 @@ class MembershipManagerTest {
     @ParameterizedTest
     @CsvSource({
             "콜라, 10000, 10, MEMBER, 7000",
-            "콜라, 10000, 10, NON_MEMBER, 10000"
+            "콜라, 10000, 10, NON_MEMBER, 10000",
+            "콜라, 30000, 30, MEMBER, 22000"
     })
     void 멤버십_회원이라면_할인이_가능하다(final String productName,
                             final int paymentAmount,

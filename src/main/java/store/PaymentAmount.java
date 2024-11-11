@@ -14,6 +14,7 @@ public class PaymentAmount {
         int discountedPrice = (int) (this.paymentAmount * membership.getDiscountRate());
         if (discountedPrice > membership.getMaxDiscountAmount()) {
             this.paymentAmount -= membership.getMaxDiscountAmount();
+            return;
         }
         this.paymentAmount -= discountedPrice;
     }
