@@ -10,7 +10,7 @@ public class PromotionManager {
         this.promotions = promotions;
     }
 
-    public Promotion getMatchingPromotion(PromotionStockProduct product) {
+    public Promotion getMatchingPromotion(final PromotionStockProduct product) {
         return promotions.stream()
                 .filter(promotion -> promotion.isPromotionMatch(product))
                 .findFirst()
@@ -18,7 +18,7 @@ public class PromotionManager {
     }
 
     public int calculateRequiredQuantityForPromotion(final OrderedProduct product, final Promotion productPromotion) {
-        Promotion promotion = findPromotion(productPromotion);
+        final Promotion promotion = findPromotion(productPromotion);
         if (promotion.isPromotionActive(DateTimes.now())) {
             return promotion.getRequiredQuantityForPromotion(product);
         }
