@@ -36,6 +36,10 @@ public class OrderedProduct implements Product {
         return quantity <= 0;
     }
 
+    public int getPaymentAmount() {
+        return paymentAmount.getPaymentAmount();
+    }
+
     @Override
     public void deductQuantity(final Product otherProduct) {
         quantity.deductQuantity(otherProduct);

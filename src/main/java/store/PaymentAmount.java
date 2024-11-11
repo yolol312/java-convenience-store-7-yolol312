@@ -18,6 +18,10 @@ public class PaymentAmount {
         this.paymentAmount -= discountedPrice;
     }
 
+    public int getPaymentAmount() {
+        return paymentAmount;
+    }
+
     @Override
     public String toString() {
         return formatPaymentAmount(paymentAmount);
