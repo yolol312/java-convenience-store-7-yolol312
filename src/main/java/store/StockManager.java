@@ -38,6 +38,15 @@ public class StockManager {
         }
     }
 
+    public PaymentAmount getStockProductPrice(final OrderedProduct orderedProduct) {
+        Product product = findStockProduct(orderedProduct);
+        if (product instanceof PromotionStockProduct promotionStockProduct) {
+            return new PaymentAmount(promotionStockProduct.getTotalPrice(orderedProduct));
+        }
+        RegularStockProduct regularStockProduct = (RegularStockProduct) product;
+        return new PaymentAmount(regularStockProduct.getTotalPrice(orderedProduct));
+    }
+
     private void validateOrderedProductInStock(final Product product) {
         if (!isOrderedProductInStock(product)) {
             throw new IllegalArgumentException("[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.");
@@ -47,6 +56,13 @@ public class StockManager {
     private boolean isOrderedProductInStock(final Product product) {
         return stockProducts.stream()
                 .anyMatch(stockProduct -> stockProduct.equals(product));
+    }
+
+    private Product findStockProduct(final Product product) {
+        return stockProducts.stream()
+                .filter(stockProduct -> stockProduct.equals(product))
+                .findFirst()
+                .orElse(null);
     }
 
     private Product findRegularStockProduct(final Product product) {

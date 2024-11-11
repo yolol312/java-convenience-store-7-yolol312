@@ -15,6 +15,10 @@ public class RegularStockProduct implements Product {
         this.quantity = new Quantity(quantity);
     }
 
+    public int getTotalPrice(final Product orderedProduct) {
+        return orderedProduct.getQuantity() * price;
+    }
+
     @Override
     public void deductQuantity(final Product orderedProduct) {
         validateQuantity(orderedProduct);

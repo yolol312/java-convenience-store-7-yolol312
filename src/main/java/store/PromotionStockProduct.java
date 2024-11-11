@@ -21,6 +21,10 @@ public class PromotionStockProduct implements Product {
         return promotion;
     }
 
+    public int getTotalPrice(final Product orderedProduct) {
+        return orderedProduct.getQuantity() * price;
+    }
+
     @Override
     public void deductQuantity(final Product orderedProduct) {
         if (quantity.isQuantityAtLeast(orderedProduct)) {

@@ -35,6 +35,10 @@ public class Promotion {
         return (buy + get) - calculateQuantityRemainder(product);
     }
 
+    public Integer calculateFreebies(OrderedProduct product) {
+        return product.getQuantity() / (buy + get);
+    }
+
     private LocalDate convertDate(LocalDateTime date) {
         return date.toLocalDate();
     }

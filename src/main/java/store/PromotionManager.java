@@ -17,12 +17,16 @@ public class PromotionManager {
                 .orElse(null);
     }
 
-    public int calculateRequiredQuantityForPromotion(final OrderedProduct product, final Promotion productPromotion) {
-        final Promotion promotion = findPromotion(productPromotion);
+    public int calculateRequiredQuantityForPromotion(final OrderedProduct product, final Promotion promotion) {
+        final Promotion productPromotion = findPromotion(promotion);
         if (promotion.isPromotionActive(DateTimes.now())) {
             return promotion.getRequiredQuantityForPromotion(product);
         }
         return 0;
+    }
+
+    public Integer calculateFreebies(final OrderedProduct product, final Promotion promotion) {
+        return promotion.calculateFreebies(product);
     }
 
     private Promotion findPromotion(final Promotion productPromotion) {

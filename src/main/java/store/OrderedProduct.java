@@ -26,18 +26,16 @@ public class OrderedProduct implements Product {
         paymentAmount.discountPaymentAmount(membership);
     }
 
-    private void validateOrderQuantity(final int quantity) {
-        if (isNegative(quantity)) {
-            throw new IllegalArgumentException("[ERROR] 주문 수량은 양수여야 합니다. 다시 입력해 주세요.");
-        }
-    }
-
-    private boolean isNegative(final int quantity) {
-        return quantity <= 0;
-    }
-
     public int getPaymentAmount() {
         return paymentAmount.getPaymentAmount();
+    }
+
+    public int getPrice() {
+        return paymentAmount.getPaymentAmount() / quantity.getQuantity();
+    }
+
+    public OrderedProduct getOrderedProduct() {
+        return new OrderedProduct(name, paymentAmount.getPaymentAmount(), quantity.getQuantity());
     }
 
     @Override
@@ -75,5 +73,15 @@ public class OrderedProduct implements Product {
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+    private void validateOrderQuantity(final int quantity) {
+        if (isNegative(quantity)) {
+            throw new IllegalArgumentException("[ERROR] 주문 수량은 양수여야 합니다. 다시 입력해 주세요.");
+        }
+    }
+
+    private boolean isNegative(final int quantity) {
+        return quantity <= 0;
     }
 }
