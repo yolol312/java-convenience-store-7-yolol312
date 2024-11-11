@@ -16,8 +16,8 @@ class StockManagerTest {
 
     @BeforeEach
     void setUp() throws IOException {
-        final ProductSupplier distributor = new ProductSupplier();
-        final List<Product> products = distributor.supplyProducts(PRODUCTS_PATH);
+        final ProductSupplier productSupplier = new ProductSupplier();
+        final List<Product> products = productSupplier.supplyProducts(PRODUCTS_PATH);
         stockManager = new StockManager(products);
     }
 
