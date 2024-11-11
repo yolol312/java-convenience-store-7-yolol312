@@ -15,7 +15,7 @@ public class PromotionSupplier {
     private static final int COLUMN_BUY = 1;
     private static final int COLUMN_GET = 2;
     private static final int COLUMN_START_DATE = 3;
-    private static final int COLUMN_END_DATE = 3;
+    private static final int COLUMN_END_DATE = 4;
     private static final String COLUMN_SEPARATOR = ",";
 
     public List<Promotion> supplyPromotions(String filePath) throws IOException {

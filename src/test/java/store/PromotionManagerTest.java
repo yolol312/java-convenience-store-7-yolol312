@@ -12,7 +12,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 class PromotionManagerTest {
     private static PromotionManager promotionManager;
-    private static Promotion expectedPromotion;
+    private static Promotion BuyTwoGetOneFreePromotion;
 
     @BeforeEach
     void setUp() throws IOException {
@@ -22,7 +22,7 @@ class PromotionManagerTest {
 
         final LocalDate startDate = LocalDate.parse("2024-01-01");
         final LocalDate endDate = LocalDate.parse("2024-12-31");
-        expectedPromotion = new Promotion("탄산2+1", 2, 1, startDate, endDate);
+        BuyTwoGetOneFreePromotion = new Promotion("탄산2+1", 2, 1, startDate, endDate);
     }
 
     @ParameterizedTest
@@ -42,9 +42,29 @@ class PromotionManagerTest {
 
         //when
         final Promotion promotion = promotionManager.getMatchingPromotion(promotionStockProduct);
-        final boolean isPromotionMatched = promotion.equals(expectedPromotion);
+        final boolean isPromotionMatched = promotion.equals(BuyTwoGetOneFreePromotion);
 
         //then
         assertThat(isPromotionMatched).isEqualTo(expectedPromotionMatch);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "콜라, 1, 2",
+            "콜라, 2, 1",
+            "콜라, 3, 0",
+    })
+    void 주문된_상품의_프로모션에_필요한_수량을_반환할_수_있다(final String productName,
+                                        final int orderQuantity,
+                                        final int expectedRequiredQuantity) {
+        // given
+        final OrderedProduct orderedProduct = new OrderedProduct(productName, orderQuantity);
+
+        //when
+        final int requiredQuantityForPromotion =
+                promotionManager.calculateRequiredQuantityForPromotion(orderedProduct, BuyTwoGetOneFreePromotion);
+
+        //then
+        assertThat(requiredQuantityForPromotion).isEqualTo(expectedRequiredQuantity);
     }
 }
